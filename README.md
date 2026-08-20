@@ -43,14 +43,16 @@ $ exit                         # exit the subshell when you're done
 
 **macOS / Linux**
 
+The installer pins `https://github.com/kunchenguid/treehouse/releases/download/v2.1.1/` and exits unless `checksums.txt` matches.
+
 ```sh
-curl -fsSL https://kunchenguid.github.io/treehouse/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/dklKevin/treehouse/main/docs/install.sh | sh
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-irm https://kunchenguid.github.io/treehouse/install.ps1 | iex
+irm https://raw.githubusercontent.com/dklKevin/treehouse/main/docs/install.ps1 | iex
 ```
 
 **Nix**
