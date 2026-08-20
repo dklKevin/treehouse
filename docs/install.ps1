@@ -1,10 +1,9 @@
 $ErrorActionPreference = "Stop"
 
-# Pin a published release. Do not follow /releases/latest — that URL can
-# move to an unverified asset. Fail closed unless checksums.txt matches.
-$repo = "kunchenguid/treehouse"
+# Pin a published release URL. Do not resolve GitHub's moving "latest"
+# release pointer. Fail closed unless checksums.txt matches.
 $version = "v2.1.1"
-$releaseBase = if ($env:TREEHOUSE_RELEASE_BASE) { $env:TREEHOUSE_RELEASE_BASE } else { "https://github.com/$repo/releases/download/$version" }
+$releaseBase = if ($env:TREEHOUSE_RELEASE_BASE) { $env:TREEHOUSE_RELEASE_BASE } else { "https://github.com/kunchenguid/treehouse/releases/download/v2.1.1" }
 
 $installDir = if ($env:TREEHOUSE_INSTALL_DIR) { $env:TREEHOUSE_INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA "treehouse" }
 

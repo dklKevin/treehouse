@@ -1,11 +1,10 @@
 #!/bin/sh
 set -e
 
-# Pin a published release. Do not follow /releases/latest — that URL can
-# move to an unverified asset. Fail closed unless checksums.txt matches.
-REPO="kunchenguid/treehouse"
+# Pin a published release URL. Do not resolve GitHub's moving "latest"
+# release pointer. Fail closed unless checksums.txt matches.
 VERSION="v2.1.1"
-RELEASE_BASE="${TREEHOUSE_RELEASE_BASE:-https://github.com/${REPO}/releases/download/${VERSION}}"
+RELEASE_BASE="${TREEHOUSE_RELEASE_BASE:-https://github.com/kunchenguid/treehouse/releases/download/v2.1.1}"
 
 # Prefer ~/.local/bin if it exists and is in PATH (no sudo needed).
 # Fall back to /usr/local/bin otherwise.

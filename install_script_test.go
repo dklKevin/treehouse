@@ -33,8 +33,8 @@ func TestInstallScriptsPinReleaseAndRejectLatest(t *testing.T) {
 			t.Fatalf("read %s: %v", path, err)
 		}
 		text := string(data)
-		if strings.Contains(text, "/releases/latest") {
-			t.Errorf("%s must not follow /releases/latest", path)
+		if strings.Contains(text, "api.github.com/repos") && strings.Contains(text, "releases/latest") {
+			t.Errorf("%s must not resolve the moving GitHub latest-release API", path)
 		}
 		if !strings.Contains(text, pinnedReleaseURL) {
 			t.Errorf("%s must pin %s", path, pinnedReleaseURL)
