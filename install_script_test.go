@@ -14,7 +14,6 @@ import (
 
 const (
 	pinnedInstallTag     = "v2.1.1"
-	pinnedReleasePath    = "releases/download/" + pinnedInstallTag + "/"
 	checksumsAsset       = "checksums.txt"
 	latestReleaseAPIPath = "releases/latest"
 )
@@ -34,8 +33,9 @@ func TestInstallScriptsPinReleaseAndRequireChecksums(t *testing.T) {
 		if strings.Contains(script, latestReleaseAPIPath) {
 			t.Errorf("%s must not follow /%s", name, latestReleaseAPIPath)
 		}
-		if !strings.Contains(script, "https://github.com/kunchenguid/treehouse/"+pinnedReleasePath) {
-			t.Errorf("%s must pin https://github.com/kunchenguid/treehouse/%s", name, pinnedReleasePath)
+		pinnedURL := "https://github.com/kunchenguid/treehouse/releases/download/" + pinnedInstallTag
+		if !strings.Contains(script, pinnedURL) {
+			t.Errorf("%s must pin %s", name, pinnedURL)
 		}
 		if !strings.Contains(script, checksumsAsset) {
 			t.Errorf("%s must download %s", name, checksumsAsset)
