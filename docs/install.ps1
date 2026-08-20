@@ -1,15 +1,22 @@
 $ErrorActionPreference = "Stop"
 
-# Installs a pinned GitHub release. Never follows /releases/latest.
+# Installs a pinned GitHub release. Never queries the latest-release API.
 # Override the pin with TREEHOUSE_VERSION=vX.Y.Z (still checksum-verified).
 $repo = "kunchenguid/treehouse"
 $pinnedVersion = "v2.1.1"
-$version = if ($env:TREEHOUSE_VERSION) { $env:TREEHOUSE_VERSION } else { $pinnedVersion }
+$pinnedReleaseBase = "https://github.com/kunchenguid/treehouse/releases/download/v2.1.1"
 
-# Reject unpinned or path-like values so the download URL cannot drift to
-# /releases/latest or escape the releases/download/<tag>/ prefix.
-if ($version -notmatch '^v[0-9][A-Za-z0-9._-]*$') {
-    throw "Invalid TREEHOUSE_VERSION: $version (expected vX.Y.Z)"
+if ($env:TREEHOUSE_VERSION) {
+    $version = $env:TREEHOUSE_VERSION
+    # Reject unpinned or path-like values so the download URL cannot drift
+    # to a floating tag or escape the releases/download/<tag>/ prefix.
+    if ($version -notmatch '^v[0-9][A-Za-z0-9._-]*$') {
+        throw "Invalid TREEHOUSE_VERSION: $version (expected vX.Y.Z)"
+    }
+    $releaseBase = "https://github.com/$repo/releases/download/$version"
+} else {
+    $version = $pinnedVersion
+    $releaseBase = $pinnedReleaseBase
 }
 
 $installDir = "$env:LOCALAPPDATA\treehouse"
@@ -18,7 +25,6 @@ $arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "amd64" 
 
 $versionNum = $version.TrimStart("v")
 $filename = "treehouse-v$versionNum-windows-$arch.zip"
-$releaseBase = "https://github.com/$repo/releases/download/$version"
 $url = "$releaseBase/$filename"
 $checksumsUrl = "$releaseBase/checksums.txt"
 

@@ -1,11 +1,11 @@
 #!/bin/sh
 set -e
 
-# Installs a pinned GitHub release. Never follows /releases/latest.
+# Installs a pinned GitHub release. Never queries the latest-release API.
 # Override the pin with TREEHOUSE_VERSION=vX.Y.Z (still checksum-verified).
 REPO="kunchenguid/treehouse"
 PINNED_VERSION="v2.1.1"
-VERSION="${TREEHOUSE_VERSION:-$PINNED_VERSION}"
+PINNED_RELEASE_BASE="https://github.com/kunchenguid/treehouse/releases/download/v2.1.1"
 
 # Prefer ~/.local/bin if it exists and is in PATH (no sudo needed).
 # Fall back to /usr/local/bin otherwise.
@@ -29,23 +29,29 @@ case "$OS" in
   *) echo "Unsupported OS: $OS"; exit 1 ;;
 esac
 
-# Reject unpinned or path-like values so the download URL cannot drift to
-# /releases/latest or escape the releases/download/<tag>/ prefix.
-case "$VERSION" in
-  *[!A-Za-z0-9._-]*|"")
-    echo "Invalid TREEHOUSE_VERSION: $VERSION" >&2
-    exit 1
-    ;;
-  v[0-9]*) ;;
-  *)
-    echo "Invalid TREEHOUSE_VERSION: $VERSION (expected vX.Y.Z)" >&2
-    exit 1
-    ;;
-esac
+if [ -n "${TREEHOUSE_VERSION:-}" ]; then
+  VERSION="$TREEHOUSE_VERSION"
+  # Reject unpinned or path-like values so the download URL cannot drift
+  # to a floating tag or escape the releases/download/<tag>/ prefix.
+  case "$VERSION" in
+    *[!A-Za-z0-9._-]*|"")
+      echo "Invalid TREEHOUSE_VERSION: $VERSION" >&2
+      exit 1
+      ;;
+    v[0-9]*) ;;
+    *)
+      echo "Invalid TREEHOUSE_VERSION: $VERSION (expected vX.Y.Z)" >&2
+      exit 1
+      ;;
+  esac
+  RELEASE_BASE="https://github.com/${REPO}/releases/download/${VERSION}"
+else
+  VERSION="$PINNED_VERSION"
+  RELEASE_BASE="$PINNED_RELEASE_BASE"
+fi
 
 VERSION_NUM="${VERSION#v}"
 FILENAME="treehouse-v${VERSION_NUM}-${OS}-${ARCH}.tar.gz"
-RELEASE_BASE="https://github.com/${REPO}/releases/download/${VERSION}"
 URL="${RELEASE_BASE}/${FILENAME}"
 CHECKSUMS_URL="${RELEASE_BASE}/checksums.txt"
 

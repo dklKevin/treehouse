@@ -34,8 +34,8 @@ func TestInstallScriptsPinReleaseAndRequireChecksums(t *testing.T) {
 		if strings.Contains(script, latestReleaseAPIPath) {
 			t.Errorf("%s must not follow /%s", name, latestReleaseAPIPath)
 		}
-		if !strings.Contains(script, pinnedReleasePath) {
-			t.Errorf("%s must pin %s", name, pinnedReleasePath)
+		if !strings.Contains(script, "https://github.com/kunchenguid/treehouse/"+pinnedReleasePath) {
+			t.Errorf("%s must pin https://github.com/kunchenguid/treehouse/%s", name, pinnedReleasePath)
 		}
 		if !strings.Contains(script, checksumsAsset) {
 			t.Errorf("%s must download %s", name, checksumsAsset)
