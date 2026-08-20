@@ -47,11 +47,15 @@ $ exit                         # exit the subshell when you're done
 curl -fsSL https://kunchenguid.github.io/treehouse/install.sh | sh
 ```
 
+The installer downloads a pinned GitHub release and refuses to install unless that release's `checksums.txt` matches. Override the pin with `TREEHOUSE_VERSION=vX.Y.Z`.
+
 **Windows (PowerShell)**
 
 ```powershell
 irm https://kunchenguid.github.io/treehouse/install.ps1 | iex
 ```
+
+Same pin and SHA-256 check as the Unix installer.
 
 **Nix**
 

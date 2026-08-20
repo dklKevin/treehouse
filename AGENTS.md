@@ -57,6 +57,7 @@ make test
   A human clears a recovered entry with `treehouse status` then `treehouse return` (or `destroy --include-leased`) once verified
 - Git operations shell out to `git` (go-git has incomplete worktree support)
 - Self-healing: stale state entries are auto-removed, and `get` prunes stale git worktree registrations before adding a worktree
+- `docs/install.sh` and `docs/install.ps1` pin a versioned `releases/download/<tag>/` URL (never `/releases/latest`) and refuse to install unless `checksums.txt` matches
 
 ## Contribution Gate
 
